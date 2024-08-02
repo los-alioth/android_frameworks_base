@@ -27,6 +27,7 @@ import android.compat.annotation.EnabledSince;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.os.SystemProperties;
 import android.telephony.AccessNetworkConstants.TransportType;
 import android.telephony.Annotation.NetworkType;
 import android.text.TextUtils;
@@ -639,14 +640,12 @@ public final class NetworkRegistrationInfo implements Parcelable {
      * override the access network technology {@link NetworkType} e.g, rat ratchet.
      * @hide
      */
-    public void setAccessNetworkTechnology(@NetworkType int tech) {
-        if (tech == TelephonyManager.NETWORK_TYPE_LTE_CA) {
-            // For old device backward compatibility support
-            tech = TelephonyManager.NETWORK_TYPE_LTE;
-            mIsUsingCarrierAggregation = true;
-        }
-        mAccessNetworkTechnology = tech;
+public void setAccessNetworkTechnology(@NetworkType int tech) {
+    // Force LTE Carrier Aggregation
+    if (tech == TelephonyManager.NETWORK_TYPE_LTE) {
+        mIsUsingCarrierAggregation = true;
     }
+}
 
     /**
      * Get the 3GPP/3GPP2 reason code indicating why registration failed.
